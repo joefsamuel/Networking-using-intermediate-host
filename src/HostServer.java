@@ -6,6 +6,8 @@ import java.net.*;
  * @author joesamuel
  *
  */
-public class Host {
+public class HostServer {
 
+	private DatagramSocket socket;
+	
 }

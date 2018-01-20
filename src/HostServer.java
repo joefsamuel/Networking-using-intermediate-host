@@ -15,8 +15,8 @@ public class HostServer {
 	public HostServer() {
 		//Setting up receive socket
 		try {
-			System.out.println("Server: Socket connection established.");
 			receiveSocket = new DatagramSocket(5069);
+			System.out.println("Server: Socket connection established.");
 		} catch (SocketException e) {
 			System.out.println("Server: Failed to establish socket connection.");
 			e.printStackTrace();

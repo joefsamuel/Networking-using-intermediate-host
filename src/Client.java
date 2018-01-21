@@ -4,6 +4,8 @@ import java.net.*;
 import java.util.Arrays;
 
 /**
+ * Client to send and subsequently receive packets from server through Intermediate host using UDP/IP protocol.
+ * 
  * @author joesamuel
  *
  */
@@ -11,13 +13,13 @@ public class Client {
 
 	private DatagramPacket sendPacket, receivePacket;
 
-	/**
-	 * @param p1
+	/*
+	 * Method to create invalid format of a packet.
+	 * 
+	 * @param fileName	FileName to be inputed into the packet
+	 * @param mode	mode to be inputed into the packet 
+	 * @return byte[] byte array of the resulting combination.
 	 */
-	public Client() {
-
-	}
-
 	private byte[] invalidRequest(String fileName, String mode) {
 		System.out.println("Client: Sending a packet containing: \n" + fileName);
 
@@ -39,6 +41,13 @@ public class Client {
 		return finalBuf;
 	}
 
+	/*
+	 * Method to create read format of a packet.
+	 * 
+	 * @param fileName	FileName to be inputed into the packet
+	 * @param mode	mode to be inputed into the packet 
+	 * @return byte[] byte array of the resulting combination.
+	 */
 	private byte[] readRequest(String fileName, String mode){
 		System.out.println("Client: Sending a packet containing: \n" + fileName);
 
@@ -60,6 +69,13 @@ public class Client {
 		return finalBuf;
 	}
 
+	/*
+	 * Method to create write format of a packet.
+	 * 
+	 * @param fileName	FileName to be inputed into the packet
+	 * @param mode	mode to be inputed into the packet 
+	 * @return byte[] byte array of the resulting combination.
+	 */
 	private byte[] writeRequest(String fileName, String mode){
 		System.out.println("Client: Sending a packet containing: \n" + fileName);		
 		byte[] a = new byte[2];
@@ -80,6 +96,12 @@ public class Client {
 		return finalBuf;
 	}
 
+	/*
+	 * Method to run client to generate a packet.
+	 * 
+	 * @param i	the number of the iteration it's running on
+	 * @return none
+	 */
 	public void runClient(int i) {
 		//Socket creation
 		DatagramSocket sendReceiveSocket = null;
@@ -154,6 +176,12 @@ public class Client {
 		sendReceiveSocket.close();
 	}
 
+	/*
+	 * Method to generate 11 iterations of client packets.
+	 * 
+	 * @param args[] default arguments to main function.
+	 * @return none.
+	 */
 	public static void main(String args[]) {
 		Client c = new Client();
 		for(int i = 1; i <= 11; i++) {	

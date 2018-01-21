@@ -4,6 +4,8 @@ import java.net.*;
 import java.util.Arrays;
 
 /**
+ * Class to act as server to receive data packets from Intermediate host and transmit a validation algorithm to validate packet received.
+ * 
  * @author joesamuel
  *
  */
@@ -15,14 +17,23 @@ public class HostServer {
 	private boolean read;
 	private boolean format;
 
-	public HostServer() {
+	/*
+	 * Constructor
+	 */
+	private HostServer() {
 		validPacket = new byte[4];
 		flag = false;
 		read = false;
 		format = false;
 	}
 
-	public void formatValidity(byte[] receivedByte) {
+	/*
+	 * Method to validate the format of byte array
+	 * 
+	 * @param  receivedByte byte array to be checked against validation condition
+	 * @return none
+	 */
+	private void formatValidity(byte[] receivedByte) {
 		//Note: true pattern matching can only be achieved through extensive use of algorithm such as KPM
 		//use of regex wouldn't be possible due to byte conversion and string error 
 		format = true;
@@ -31,7 +42,13 @@ public class HostServer {
 		}
 	}
 
-	public void checkReadValidity(byte[] receivedByte) {
+	/*
+	 * Method to validate the read format of byte array
+	 * 
+	 * @param  receivedByte byte array to be checked against validation condition
+	 * @return none
+	 */
+	private void checkReadValidity(byte[] receivedByte) {
 		if(receivedByte[0] == 0 && receivedByte[1]==1) {
 			System.out.println("Server: Read request detected.");
 			read = true;
@@ -39,7 +56,13 @@ public class HostServer {
 		}
 	}
 
-	public void checkWriteValidity(byte[] receivedByte) {
+	/*
+	 * Method to validate the write format of byte array
+	 * 
+	 * @param  receivedByte byte array to be checked against validation condition
+	 * @return none
+	 */
+	private void checkWriteValidity(byte[] receivedByte) {
 		if(receivedByte[0] == 0 && receivedByte[1] == 2) {
 			System.out.println("Server: Write request detected.");
 			read = false;
@@ -47,6 +70,12 @@ public class HostServer {
 		}
 	}
 
+	/*
+	 * Method to run server to receive and transmit validation packet.
+	 * 
+	 * @param none
+	 * @return none
+	 */
 	public void runServer(){
 		while(true) {
 			DatagramSocket sendSocket = null, receiveSocket = null;
@@ -146,6 +175,12 @@ public class HostServer {
 		}
 	}
 
+	/*
+	 * Method to run the server
+	 * 
+	 * @param args[] default arguments to main function.
+	 * @return none.
+	 */
 	public static void main(String args[]) {
 		HostServer server = new HostServer();
 		server.runServer();

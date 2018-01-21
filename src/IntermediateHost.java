@@ -2,6 +2,8 @@
 import java.io.IOException;
 import java.net.*;
 /**
+ * Class to be the intermediate host between client and server. 
+ * 
  * @author joesamuel
  *
  */
@@ -10,6 +12,12 @@ public class IntermediateHost {
 	private DatagramPacket sendPacket, receivePacket, serverPacket, clientPacket;
 
 
+	/*
+	 * Method to run host to receive and retransmit a packet.
+	 * 
+	 * @param none
+	 * @return none
+	 */
 	public void runHost() {
 		//Socket creation
 		DatagramSocket sendSocket = null, receiveSocket = null;
@@ -130,6 +138,12 @@ public class IntermediateHost {
 
 	}
 
+	/*
+	 * Method to run the intermediate host.
+	 * 
+	 * @param args[] default arguments to main function.
+	 * @return none.
+	 */
 	public static void main( String args[] )
 	{
 		IntermediateHost host = new IntermediateHost();

@@ -8,9 +8,16 @@ import java.net.*;
 public class IntermediateHost {
 
 	private DatagramPacket sendPacket, receivePacket, serverPacket, clientPacket;
-	private DatagramSocket sendSocket, receiveSocket;
+	
 
 	public IntermediateHost() {
+	}
+
+
+	public void runHost() {
+		//Socket creation
+		DatagramSocket sendSocket = null, receiveSocket = null;
+		
 		//Setting up Send socket
 		try {
 			sendSocket = new DatagramSocket();
@@ -27,10 +34,7 @@ public class IntermediateHost {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	}
-
-
-	public void runHost() {
+		
 		//Receiving a packet for retransmission
 		byte buf[] = new byte[100];
 		receivePacket = new DatagramPacket(buf, buf.length);

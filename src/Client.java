@@ -12,6 +12,16 @@ import java.util.Arrays;
 public class Client {
 
 	private DatagramPacket sendPacket, receivePacket;
+	private int hostPort;
+	
+	
+	
+	/**
+	 * @param hostPort
+	 */
+	public Client() {
+		hostPort = 5023;
+	}
 
 	/*
 	 * Method to create invalid format of a packet.
@@ -127,7 +137,7 @@ public class Client {
 
 		System.out.println(new String(buf,0,buf.length)); 
 		try {
-			sendPacket = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 23);
+			sendPacket = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), hostPort);
 		} catch (UnknownHostException e1) {
 			System.out.println("Client: Failed to create data packet.");
 			e1.printStackTrace();

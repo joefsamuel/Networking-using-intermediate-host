@@ -16,6 +16,8 @@ public class HostServer {
 	private boolean flag;
 	private boolean read;
 	private boolean format;
+	private int serverPort;
+	private int hostPort;
 
 	/*
 	 * Constructor
@@ -25,6 +27,8 @@ public class HostServer {
 		flag = false;
 		read = false;
 		format = false;
+		serverPort = 5069;
+		hostPort = 5023;
 	}
 
 	/*
@@ -82,7 +86,7 @@ public class HostServer {
 
 			//Setting up receive socket
 			try {
-				receiveSocket = new DatagramSocket(69);
+				receiveSocket = new DatagramSocket(serverPort);
 				System.out.println("Server: Socket connection established.");
 			} catch (SocketException e) {
 				System.out.println("Server: Failed to establish socket connection.");
@@ -140,7 +144,8 @@ public class HostServer {
 				validPacket[3] = 0;
 			}
 
-			sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), receivePacket.getPort()); //Works if port set to 23(Intermediate Host)
+			//CHANGE MADE HERE
+			sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), hostPort); //Works if port set to 23(Intermediate Host)
 
 
 			//Sending packet

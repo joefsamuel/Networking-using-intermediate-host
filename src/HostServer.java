@@ -9,24 +9,47 @@ import java.util.Arrays;
 public class HostServer {
 
 	private DatagramPacket sendPacket, receivePacket;
-	private DatagramSocket sendSocket, receiveSocket;
-	private byte[] validPacket = new byte[4];
-
+	private byte[] validPacket;
+	private boolean flag;
+	private boolean read;
+	
 	public HostServer() {
-		//Setting up receive socket
-		try {
-			receiveSocket = new DatagramSocket(5069);
-			System.out.println("Server: Socket connection established.");
-		} catch (SocketException e) {
-			System.out.println("Server: Failed to establish socket connection.");
-			e.printStackTrace();
-			System.exit(1);
-		}
+		validPacket = new byte[4];
+		flag = false;
+		read = false;
 		
 	}
 
+	public void checkReadValidity(byte[] receivedByte) {
+		if(receivedByte[0] == 0 && receivedByte[1]==1) {
+			System.out.println("Server: Read request detected.");
+			read = true;
+			flag = true;
+		}
+	}
+	
+	public void checkWriteValidity(byte[] receivedByte) {
+		if(receivedByte[0] == 0 && receivedByte[1] == 2) {
+			System.out.println("Server: Write request detected.");
+			read = false;
+			flag = true;
+		}
+	}
+	
 	public void runServer(){
 		while(true) {
+			DatagramSocket sendSocket = null, receiveSocket = null;
+			
+			//Setting up receive socket
+			try {
+				receiveSocket = new DatagramSocket(5069);
+				System.out.println("Server: Socket connection established.");
+			} catch (SocketException e) {
+				System.out.println("Server: Failed to establish socket connection.");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
 			//Setting up receive packet
 			byte[] buf = new byte[100];
 			receivePacket = new DatagramPacket(buf, buf.length);
@@ -47,10 +70,9 @@ public class HostServer {
 			
 			//Parsing if packet is valid
 			System.out.println("Server: Parsing packet to confirm validity");
-			boolean flag = true;
-			boolean read = true;
-			
-			
+			byte[] receivedByte = receivePacket.getData();
+			checkReadValidity(receivedByte); 
+			checkWriteValidity(receivedByte);
 
 			//Printing out valid packet data
 			int receivedPacketLength = receivePacket.getLength();
@@ -62,6 +84,7 @@ public class HostServer {
 			//Response to received Packet
 			if(!flag){
 				System.out.println("Server: Invalid packet.");
+				System.exit(1);
 			}
 			else if(read && flag){
 				validPacket[0] = 0;
@@ -76,9 +99,9 @@ public class HostServer {
 				validPacket[3] = 0;
 			}
 
-			sendPacket = new DatagramPacket(validPacket, validPacket.length,
-					receivePacket.getAddress(), receivePacket.getPort());
-
+			//sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), receivePacket.getPort());
+					sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), 5023);
+			
 			//Sending packet
 			try {
 				sendSocket = new DatagramSocket();
@@ -108,9 +131,7 @@ public class HostServer {
 			//Closing sockets
 			sendSocket.close();
 			receiveSocket.close();
-
 		}
-		
 	}
 
 	public static void main(String args[]) {

@@ -54,14 +54,6 @@ public class IntermediateHost {
 		String received = new String(buf,0,len);   
 		System.out.println("Containing: " + received + "\n");
 
-		// Slow things down (wait 5 seconds)
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e ) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-
 		//Setting up for retransmission of received packet
 		sendPacket = new DatagramPacket(buf, receivePacket.getLength(),
 				receivePacket.getAddress(), 5069);
@@ -86,7 +78,6 @@ public class IntermediateHost {
 		System.out.println("Intermediate Host: Packet successfully sent to server.");
 		
 		//SERVER PACKET RESOPNSE 
-		
 		//Receiving a packet for retransmission
 				byte newBuf[] = new byte[100];
 				serverPacket = new DatagramPacket(newBuf, newBuf.length);

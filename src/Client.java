@@ -82,9 +82,9 @@ public class Client {
 
 	public void runClient(int i) {
 		//Socket creation
-		DatagramSocket sendSocket = null, receiveSocket = null;
+		DatagramSocket sendReceiveSocket = null;
 		try {
-			sendSocket = new DatagramSocket();
+			sendReceiveSocket = new DatagramSocket();
 		} catch (SocketException e) {
 			System.out.println("Client: Failed to establish socket connection.");
 			e.printStackTrace();
@@ -121,7 +121,7 @@ public class Client {
 		System.out.println(Arrays.toString(sendPacket.getData()));
 		System.out.println(new String(sendPacket.getData(),0,len)); 
 		try {
-			sendSocket.send(sendPacket);
+			sendReceiveSocket.send(sendPacket);
 		} catch (IOException e) {
 			System.out.println("Client: Unable to send packet.");
 			e.printStackTrace();
@@ -129,18 +129,12 @@ public class Client {
 		System.out.println("Client: Houston... Packet has been sent successfully.");
 
 		//Receiving Packets
-		try {
-			receiveSocket = new DatagramSocket();
-		} catch (SocketException e1) {
-			System.out.println("Client: Failed to establish receive socket.");
-			e1.printStackTrace();
-		}
 		//Setting up receive packet to accept data
 		byte receiveBuf[] = new byte[100];
 		receivePacket = new DatagramPacket(receiveBuf, receiveBuf.length);
 		try {
 			System.out.println("Client: Waiting for packets to be received.");
-			receiveSocket.receive(receivePacket);
+			sendReceiveSocket.receive(receivePacket);
 		} catch (IOException e) {
 			System.out.println("Client: Unable to receive packets.");
 			e.printStackTrace();
@@ -157,8 +151,7 @@ public class Client {
 		System.out.println(received);
 
 		// Closing socket
-		sendSocket.close();
-		receiveSocket.close();
+		sendReceiveSocket.close();
 	}
 
 	public static void main(String args[]) {

@@ -10,10 +10,6 @@ public class IntermediateHost {
 	private DatagramPacket sendPacket, receivePacket, serverPacket, clientPacket;
 
 
-	public IntermediateHost() {
-	}
-
-
 	public void runHost() {
 		//Socket creation
 		DatagramSocket sendSocket = null, receiveSocket = null;

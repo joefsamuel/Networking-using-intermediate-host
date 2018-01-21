@@ -8,7 +8,7 @@ import java.net.*;
 public class IntermediateHost {
 
 	private DatagramPacket sendPacket, receivePacket, serverPacket, clientPacket;
-	
+
 
 	public IntermediateHost() {
 	}
@@ -17,7 +17,7 @@ public class IntermediateHost {
 	public void runHost() {
 		//Socket creation
 		DatagramSocket sendSocket = null, receiveSocket = null;
-		
+
 		//Setting up Send socket
 		try {
 			sendSocket = new DatagramSocket();
@@ -34,7 +34,7 @@ public class IntermediateHost {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+
 		//Receiving a packet for retransmission
 		byte buf[] = new byte[100];
 		receivePacket = new DatagramPacket(buf, buf.length);
@@ -80,58 +80,58 @@ public class IntermediateHost {
 		}
 
 		System.out.println("Intermediate Host: Packet successfully sent to server.");
-		
+
 		//SERVER PACKET RESOPNSE 
 		//Receiving a packet for retransmission
-				byte newBuf[] = new byte[100];
-				serverPacket = new DatagramPacket(newBuf, newBuf.length);
-				try {        
-					System.out.println("Intermediate Host: Waiting to receive packet from server."); 
-					receiveSocket.receive(serverPacket);
-				} catch (IOException e) {
-					System.out.println("Intermediate Host: Failed to receive packet from server.");
-					e.printStackTrace();
-					System.exit(1);
-				}
+		byte newBuf[] = new byte[100];
+		serverPacket = new DatagramPacket(newBuf, newBuf.length);
+		try {        
+			System.out.println("Intermediate Host: Waiting to receive packet from server."); 
+			receiveSocket.receive(serverPacket);
+		} catch (IOException e) {
+			System.out.println("Intermediate Host: Failed to receive packet from server.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 
-				// Unpacking the received packet
-				System.out.println("Intermediate Host: Unpacking packet received from server:");
-				System.out.println("From host: " + receivePacket.getAddress());
-				System.out.println("Host port: " + receivePacket.getPort());
-				len = serverPacket.getLength();
-				System.out.println("Length: " + len);
-				System.out.print("Host: Containing: " );
-				String serverString = new String(buf,0,len);   
-				System.out.println("Containing: " + serverString + "\n");
+		// Unpacking the received packet
+		System.out.println("Intermediate Host: Unpacking packet received from server:");
+		System.out.println("From host: " + receivePacket.getAddress());
+		System.out.println("Host port: " + receivePacket.getPort());
+		len = serverPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Host: Containing: " );
+		String serverString = new String(buf,0,len);   
+		System.out.println("Containing: " + serverString + "\n");
 
-				//Setting up for retransmission of received packet
-				clientPacket = new DatagramPacket(buf, serverPacket.getLength(),
-						serverPacket.getAddress(), serverPacket.getPort()); //Works if port number set to number set to Client
+		//Setting up for retransmission of received packet
+		clientPacket = new DatagramPacket(buf, serverPacket.getLength(),
+				serverPacket.getAddress(), serverPacket.getPort()); //Works if port number set to number set to Client
 
-				System.out.println("Intermediate Host: Sending packet that was received to client.");
-				System.out.println("To host: " + clientPacket.getAddress());
-				System.out.println("Destination host port: " + clientPacket.getPort());
-				len = clientPacket.getLength();
-				System.out.println("Length: " + len);
-				System.out.print("Containing: ");
-				System.out.println(new String(clientPacket.getData(),0,len));
+		System.out.println("Intermediate Host: Sending packet that was received to client.");
+		System.out.println("To host: " + clientPacket.getAddress());
+		System.out.println("Destination host port: " + clientPacket.getPort());
+		len = clientPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+		System.out.println(new String(clientPacket.getData(),0,len));
 
-				// Sending the new packet to Server
-				try {
-					sendSocket.send(clientPacket);
-				} catch (IOException e) {
-					System.out.println("Intermediate Host: Failed to send packet to client.");
-					e.printStackTrace();
-					System.exit(1);
-				}
+		// Sending the new packet to Server
+		try {
+			sendSocket.send(clientPacket);
+		} catch (IOException e) {
+			System.out.println("Intermediate Host: Failed to send packet to client.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 
-				System.out.println("Intermediate Host: Packet successfully sent to client.");
+		System.out.println("Intermediate Host: Packet successfully sent to client.");
 
-				// Closing sockets
-				sendSocket.close();
-				receiveSocket.close();
-		
-		
+		// Closing sockets
+		sendSocket.close();
+		receiveSocket.close();
+
+
 	}
 
 	public static void main( String args[] )

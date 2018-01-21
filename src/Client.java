@@ -10,17 +10,17 @@ import java.util.Arrays;
 public class Client {
 
 	private DatagramPacket sendPacket, receivePacket;
-	
+
 	/**
 	 * @param p1
 	 */
 	public Client() {
-		
+
 	}
-	
+
 	private byte[] invalidRequest(String fileName, String mode) {
 		System.out.println("Client: Sending a packet containing: \n" + fileName);
-		
+
 		byte[] a = new byte[2];
 		a[0] = 1;
 		a[1] = 4;
@@ -41,7 +41,7 @@ public class Client {
 
 	private byte[] readRequest(String fileName, String mode){
 		System.out.println("Client: Sending a packet containing: \n" + fileName);
-		
+
 		byte[] a = new byte[2];
 		a[0] = 0;
 		a[1] = 1;
@@ -90,7 +90,7 @@ public class Client {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+
 		//Setting up the packet
 		byte[] buf;
 		if(i%2 == 0 && i<11) {
@@ -102,7 +102,7 @@ public class Client {
 		else {
 			buf = writeRequest("test.txt", "netascii");
 		}
-		
+
 		System.out.println(new String(buf,0,buf.length)); 
 		try {
 			sendPacket = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 23);

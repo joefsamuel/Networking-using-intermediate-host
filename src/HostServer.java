@@ -13,7 +13,7 @@ public class HostServer {
 	private boolean flag;
 	private boolean read;
 	private boolean format;
-	
+
 	public HostServer() {
 		validPacket = new byte[4];
 		flag = false;
@@ -29,7 +29,7 @@ public class HostServer {
 			System.out.println("Server: Received packet follows valid format.");
 		}
 	}
-	
+
 	public void checkReadValidity(byte[] receivedByte) {
 		if(receivedByte[0] == 0 && receivedByte[1]==1) {
 			System.out.println("Server: Read request detected.");
@@ -37,7 +37,7 @@ public class HostServer {
 			flag = true;
 		}
 	}
-	
+
 	public void checkWriteValidity(byte[] receivedByte) {
 		if(receivedByte[0] == 0 && receivedByte[1] == 2) {
 			System.out.println("Server: Write request detected.");
@@ -45,11 +45,11 @@ public class HostServer {
 			flag = true;
 		}
 	}
-	
+
 	public void runServer(){
 		while(true) {
 			DatagramSocket sendSocket = null, receiveSocket = null;
-			
+
 			//Setting up receive socket
 			try {
 				receiveSocket = new DatagramSocket(69);
@@ -59,7 +59,7 @@ public class HostServer {
 				e.printStackTrace();
 				System.exit(1);
 			}
-			
+
 			//Setting up receive packet
 			byte[] buf = new byte[100];
 			receivePacket = new DatagramPacket(buf, buf.length);
@@ -77,7 +77,7 @@ public class HostServer {
 			System.out.println("From: " + receivePacket.getAddress());
 			System.out.println("Port: " + receivePacket.getPort());
 			System.out.println(Arrays.toString(receivePacket.getData()));
-			
+
 			//Parsing if packet is valid
 			System.out.println("Server: Parsing packet to confirm validity");
 			byte[] receivedByte = receivePacket.getData();
@@ -112,7 +112,7 @@ public class HostServer {
 
 			sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), receivePacket.getPort()); //Works if port set to 23(Intermediate Host)
 
-			
+
 			//Sending packet
 			try {
 				sendSocket = new DatagramSocket();
@@ -147,6 +147,6 @@ public class HostServer {
 
 	public static void main(String args[]) {
 		HostServer server = new HostServer();
-			server.runServer();
+		server.runServer();
 	}
 }

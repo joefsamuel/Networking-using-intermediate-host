@@ -105,7 +105,7 @@ public class Client {
 		
 		System.out.println(new String(buf,0,buf.length)); 
 		try {
-			sendPacket = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 5023);
+			sendPacket = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 23);
 		} catch (UnknownHostException e1) {
 			System.out.println("Client: Failed to create data packet.");
 			e1.printStackTrace();
@@ -130,7 +130,7 @@ public class Client {
 
 		//Receiving Packets
 		try {
-			receiveSocket = new DatagramSocket(5023);
+			receiveSocket = new DatagramSocket();
 		} catch (SocketException e1) {
 			System.out.println("Client: Failed to establish receive socket.");
 			e1.printStackTrace();

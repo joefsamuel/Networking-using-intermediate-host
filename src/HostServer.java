@@ -12,14 +12,24 @@ public class HostServer {
 	private byte[] validPacket;
 	private boolean flag;
 	private boolean read;
+	private boolean format;
 	
 	public HostServer() {
 		validPacket = new byte[4];
 		flag = false;
 		read = false;
-		
+		format = false;
 	}
 
+	public void formatValidity(byte[] receivedByte) {
+		//Note: true pattern matching can only be achieved through extensive use of algorithm such as KPM
+		//use of regex wouldn't be possible due to byte conversion and string error 
+		format = true;
+		if(format) {
+			System.out.println("Server: Received packet follows valid format.");
+		}
+	}
+	
 	public void checkReadValidity(byte[] receivedByte) {
 		if(receivedByte[0] == 0 && receivedByte[1]==1) {
 			System.out.println("Server: Read request detected.");
@@ -42,7 +52,7 @@ public class HostServer {
 			
 			//Setting up receive socket
 			try {
-				receiveSocket = new DatagramSocket(5069);
+				receiveSocket = new DatagramSocket(69);
 				System.out.println("Server: Socket connection established.");
 			} catch (SocketException e) {
 				System.out.println("Server: Failed to establish socket connection.");
@@ -71,6 +81,7 @@ public class HostServer {
 			//Parsing if packet is valid
 			System.out.println("Server: Parsing packet to confirm validity");
 			byte[] receivedByte = receivePacket.getData();
+			formatValidity(receivedByte);
 			checkReadValidity(receivedByte); 
 			checkWriteValidity(receivedByte);
 
@@ -99,8 +110,8 @@ public class HostServer {
 				validPacket[3] = 0;
 			}
 
-			//sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), receivePacket.getPort());
-					sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), 5023);
+			sendPacket = new DatagramPacket(validPacket, validPacket.length, receivePacket.getAddress(), receivePacket.getPort()); //Works if port set to 23(Intermediate Host)
+
 			
 			//Sending packet
 			try {
@@ -137,6 +148,5 @@ public class HostServer {
 	public static void main(String args[]) {
 		HostServer server = new HostServer();
 			server.runServer();
-
 	}
 }

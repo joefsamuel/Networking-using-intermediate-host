@@ -28,7 +28,7 @@ public class IntermediateHost {
 		}
 		//Setting up Receive socket
 		try {
-			receiveSocket = new DatagramSocket(5023);
+			receiveSocket = new DatagramSocket(23);
 		} catch (SocketException e) {
 			System.out.println("Intermediate Host: Failed to establish receive socket.");
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class IntermediateHost {
 
 		//Setting up for retransmission of received packet
 		sendPacket = new DatagramPacket(buf, receivePacket.getLength(),
-				receivePacket.getAddress(), 5069);
+				receivePacket.getAddress(), 69);
 
 		System.out.println("Intermediate Host: Sending packet that was received.");
 		System.out.println("To host: " + sendPacket.getAddress());
@@ -104,17 +104,9 @@ public class IntermediateHost {
 				String serverString = new String(buf,0,len);   
 				System.out.println("Containing: " + serverString + "\n");
 
-				// Slow things down (wait 5 seconds)
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e ) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-
 				//Setting up for retransmission of received packet
 				clientPacket = new DatagramPacket(buf, serverPacket.getLength(),
-						serverPacket.getAddress(), 5023);
+						serverPacket.getAddress(), serverPacket.getPort()); //Works if port number set to number set to Client
 
 				System.out.println("Intermediate Host: Sending packet that was received to client.");
 				System.out.println("To host: " + clientPacket.getAddress());
